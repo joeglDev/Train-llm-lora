@@ -60,7 +60,8 @@ print(f"Total parameters:          {tot_p / 1e6:.2f}M")
 print(f"% of trainable parameters: {100 * train_p / tot_p:.2f}%")
 
 # load training dataset
-with open(os.path.join(os.path.dirname(__file__), DATA_PATH), "r") as f:
+data_path = os.path.join(os.path.dirname(__file__), DATA_PATH)
+with open(data_path, "r") as f:
     data = json.load(f)
 
 # Transform the nested structure into flat samples
@@ -115,6 +116,8 @@ if tokenizer.pad_token is None:
 # print(tokenizer.apply_chat_template(training_dataset, tokenize=False))
 
 # training
+logging_path = os.path.join(os.path.dirname(__file__), "./logs")
+output_path = os.path.join(os.path.dirname(__file__), "./output")
 sft_config = SFTConfig(
     ## GROUP 1: Memory usage
     # These arguments will squeeze the most out of your GPU's RAM
@@ -142,8 +145,8 @@ sft_config = SFTConfig(
     optim="paged_adamw_8bit",
     ## GROUP 4: Logging parameters
     logging_steps=10,
-    logging_dir="./logs",
-    output_dir="./output",
+    logging_dir=logging_path,
+    output_dir=output_path,
     report_to="none",
 )
 
