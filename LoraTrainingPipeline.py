@@ -117,16 +117,19 @@ class LoraTrainingPipeline:
         training_dataset = []
         index = 0
         for _ in user_messages:
-            conversation = {"messages": [
-                # {"role": "system", "content": "You are helpful"},
-                {"role": "user", "content": user_messages[index]["text"]},
-                {"role": "assistant", "content": assistant_messages[index]["text"]},
-            ]}
+            conversation = {
+                "messages": [
+                    # {"role": "system", "content": "You are helpful"},
+                    {"role": "user", "content": user_messages[index]["text"]},
+                    {"role": "assistant", "content": assistant_messages[index]["text"]},
+                ]
+            }
             training_dataset.append(conversation)
             index += 1
 
         print("The first three items in the training dataset are:")
-        print(training_dataset[0:2]["messages"])
+        for item in training_dataset[0:3]:
+            print(f"{item['messages']}")
 
         dataset = Dataset.from_list(training_dataset)
         self.dataset = dataset
